@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Novel {
+  id        String    @id
+  title     String
+  short     Boolean
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  chapter   Chapter[]
+
+  @@map("novels")
+}
+
+model Chapter {
+  id        Int
+  title     String
+  content   String
+  novelId   String   @map("novel_id")
+  novel     Novel    @relation(fields: [novelId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([id, novelId])
+  @@map("chapters")
+}
