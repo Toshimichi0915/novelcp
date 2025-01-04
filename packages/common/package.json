@@ -1,0 +1,7 @@
+{
+  "name": "@novelcp/common",
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "prisma": "^6.1.0"
+  }
+}

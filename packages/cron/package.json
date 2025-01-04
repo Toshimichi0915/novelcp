@@ -1,0 +1,6 @@
+{
+  "name": "@novelcp/cron",
+  "dependencies": {
+    "@novelcp/common": "workspace:^"
+  }
+}
