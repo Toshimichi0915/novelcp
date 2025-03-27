@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "tsx --env-file .env packages/cron/src/index.ts",
-    "prisma": "dotenv -- pnpm --filter=@novelcp/common exec -- prisma"
+    "prisma": "dotenv -- pnpm --filter=@novelcp/common exec -- prisma",
+    "postinstall": "dotenv -- pnpm --filter=@novelcp/common exec prisma generate"
   },
   "keywords": [],
   "author": "Toshimichi <main@toshimichi.net> (https://toshimichi.net/)",
@@ -16,7 +17,7 @@
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.13.14",
-    "dotenv-cli": "^8.0.0",
+    "dotenv-cli": "^7.4.4",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.1",
     "jsdom": "^26.0.0",
