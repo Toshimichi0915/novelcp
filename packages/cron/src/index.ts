@@ -1,17 +1,17 @@
-import { getChapter, getFavoriteNovels } from "@/narou"
-import { env } from "@/env"
-import { prisma } from "@/common/db"
+import { getChapter, getFavoriteNovels } from "./narou.js"
+import { env } from "./env.js"
+import { prisma } from "@novelcp/common"
 
 const novels = await getFavoriteNovels(env.NAROU_USER_ID)
 const dbNovels = await prisma.novel.findMany({ include: { chapter: true } })
 
 for (const novel of novels) {
-  const dbNovel = dbNovels.find(dbNovel => dbNovel.id === novel.id)
+  const dbNovel = dbNovels.find((dbNovel) => dbNovel.id === novel.id)
   if (!dbNovel || novel.title !== dbNovel.title) {
     await prisma.novel.upsert({
       where: { id: novel.id },
       update: { title: novel.title },
-      create: { id: novel.id, title: novel.title, short: novel.chapterCount == null }
+      create: { id: novel.id, title: novel.title, short: novel.chapterCount == null },
     })
   }
 
@@ -25,8 +25,8 @@ for (const novel of novels) {
           id: chapter.id ?? 1,
           title: chapter.title,
           content: chapter.content,
-          novelId: chapter.novelId
-        }
+          novelId: chapter.novelId,
+        },
       })
     }
   }

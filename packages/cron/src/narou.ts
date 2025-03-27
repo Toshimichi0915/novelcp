@@ -1,9 +1,9 @@
 import { JSDOM } from "jsdom"
 
 export interface NarouNovel {
-  id: string,
-  title: string,
-  chapterCount: number | null,
+  id: string
+  title: string
+  chapterCount: number | null
 }
 
 export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
@@ -14,8 +14,8 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
   do {
     const response = await fetch(`https://xmypage.syosetu.com/mypagefavnovelmain18/list/xid/${userId}/?p=${page}`, {
       headers: {
-        Cookie: "over18=yes"
-      }
+        Cookie: "over18=yes",
+      },
     })
 
     if (!response.ok) {
@@ -33,7 +33,10 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
     }
 
     for (const item of document.querySelectorAll(".c-novel-list__item")) {
-      const id = item.querySelector(".c-novel-list__title")?.getAttribute("href")?.match(/\/(.{7})\/$/)?.[1]
+      const id = item
+        .querySelector(".c-novel-list__title")
+        ?.getAttribute("href")
+        ?.match(/\/(.{7})\/$/)?.[1]
       if (!id) {
         throw new Error(`Failed to find favorite novel id, userId: ${userId}, page: ${page}`)
       }
@@ -44,7 +47,8 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
       }
 
       // Regular novel or short story
-      const chapterCount = parseInt(item.querySelector(".c-novel-list__number")?.textContent?.replace(/\D/g, "") ?? "0") || null
+      const chapterCount =
+        parseInt(item.querySelector(".c-novel-list__number")?.textContent?.replace(/\D/g, "") ?? "0") || null
       novels.push({ id: id, title, chapterCount })
     }
   } while (page++ < maxPage)
@@ -53,17 +57,17 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
 }
 
 export interface NarouChapter {
-  id: number | null,
-  title: string,
-  content: string,
-  novelId: string,
+  id: number | null
+  title: string
+  content: string
+  novelId: string
 }
 
 export async function getChapter(novelId: string, chapter: number | null): Promise<NarouChapter> {
   const response = await fetch(`https://novel18.syosetu.com/${novelId}/${chapter ?? ""}/`, {
     headers: {
-      Cookie: "over18=yes"
-    }
+      Cookie: "over18=yes",
+    },
   })
 
   if (!response.ok) {
@@ -77,7 +81,7 @@ export async function getChapter(novelId: string, chapter: number | null): Promi
     throw new Error(`Failed to find chapter title, novelId: ${novelId}, chapter: ${chapter}`)
   }
 
-  const content = [ ...document.querySelectorAll(".p-novel__text > p") ].map((p) => p.textContent?.trim()).join("\n")
+  const content = [...document.querySelectorAll(".p-novel__text > p")].map((p) => p.textContent?.trim()).join("\n")
   if (content.length === 0) {
     throw new Error(`Failed to find chapter content, novelId: ${novelId}, chapter: ${chapter}`)
   }
@@ -86,6 +90,6 @@ export async function getChapter(novelId: string, chapter: number | null): Promi
     id: chapter,
     title,
     content,
-    novelId
+    novelId,
   }
 }

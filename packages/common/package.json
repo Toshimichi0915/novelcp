@@ -1,7 +1,24 @@
 {
   "name": "@novelcp/common",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write src/**/*.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.1.0",
     "prisma": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0",
+    "eslint": "^9",
+    "prettier": "^3.5.3",
+    "@eslint/js": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/node": "^22.13.14"
   }
 }
