@@ -3,12 +3,10 @@ import { prisma } from "@/common/db"
 export default async function Page() {
   const novels = await prisma.novel.findMany()
   return (
-    <div>
+    <main>
       {novels.map((novel) => (
-        <div key={novel.id}>
-          <h2>{novel.title}</h2>
-        </div>
+        <p key={novel.id}>{novel.title}</p>
       ))}
-    </div>
+    </main>
   )
 }
