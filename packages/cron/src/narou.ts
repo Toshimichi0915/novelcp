@@ -59,12 +59,14 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
 export interface NarouChapter {
   id: number | null
   title: string
+  preface: string
   content: string
+  afterword: string
   novelId: string
 }
 
 export async function getChapter(novelId: string, chapter: number | null): Promise<NarouChapter> {
-  const response = await fetch(`https://novel18.syosetu.com/${novelId}/${chapter ?? ""}/`, {
+  const response = await fetch(`https://novel18.syosetu.com/${novelId}/${chapter ?? ""}`, {
     headers: {
       Cookie: "over18=yes",
     },
@@ -81,7 +83,13 @@ export async function getChapter(novelId: string, chapter: number | null): Promi
     throw new Error(`Failed to find chapter title, novelId: ${novelId}, chapter: ${chapter}`)
   }
 
-  const content = [...document.querySelectorAll(".p-novel__text > p")].map((p) => p.textContent?.trim()).join("\n")
+  function extractText(tag: string) {
+    return [...document.querySelectorAll(tag)].map((p) => p.textContent?.trim()).join("\n")
+  }
+
+  const preface = extractText(".p-novel__text--preface > p")
+  const content = extractText(".p-novel__text:not(.p-novel__text--preface, .p-novel__text--afterword) > p")
+  const afterword = extractText(".p-novel__text--afterword > p")
   if (content.length === 0) {
     throw new Error(`Failed to find chapter content, novelId: ${novelId}, chapter: ${chapter}`)
   }
@@ -89,7 +97,9 @@ export async function getChapter(novelId: string, chapter: number | null): Promi
   return {
     id: chapter,
     title,
+    preface,
     content,
+    afterword,
     novelId,
   }
 }

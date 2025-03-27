@@ -21,7 +21,9 @@ model Novel {
 model Chapter {
   id        Int
   title     String
+  preface   String
   content   String
+  afterword String
   novelId   String   @map("novel_id")
   novel     Novel    @relation(fields: [novelId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")

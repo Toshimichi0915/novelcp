@@ -24,7 +24,9 @@ for (const novel of novels) {
         data: {
           id: chapter.id ?? 1,
           title: chapter.title,
+          preface: chapter.preface,
           content: chapter.content,
+          afterword: chapter.afterword,
           novelId: chapter.novelId,
         },
       })
