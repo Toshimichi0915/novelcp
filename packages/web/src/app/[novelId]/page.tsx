@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default async function Page({ params }: { params: Promise<{ novelId: string }> }) {
   const { novelId } = await params
