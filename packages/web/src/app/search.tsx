@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -9,7 +9,8 @@ export function Search({ initialQuery = "" }: { initialQuery?: string }) {
   const [query, setQuery] = useState(initialQuery)
   const router = useRouter()
 
-  function showResult() {
+  function showResult(e: FormEvent) {
+    e.preventDefault()
     router.push(`/search?q=${encodeURIComponent(query)}`)
   }
 
