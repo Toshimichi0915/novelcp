@@ -36,7 +36,9 @@ export async function getFavoriteNovels(userId: string): Promise<NarouNovel[]> {
       const id = item
         .querySelector(".c-novel-list__title")
         ?.getAttribute("href")
-        ?.match(/\/(.{7})\/$/)?.[1]
+        ?.split("/")
+        .filter(Boolean)
+        .at(-1)
       if (!id) {
         throw new Error(`Failed to find favorite novel id, userId: ${userId}, page: ${page}`)
       }
