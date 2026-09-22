@@ -1,0 +1,28 @@
+name: Sync novels
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # daily, 09:00 JST
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NAROU_USER_ID: ${{ secrets.NAROU_USER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm --filter @novelcp/common exec prisma generate
+      - run: pnpm --filter @novelcp/common exec prisma migrate deploy
+      - run: pnpm --filter @novelcp/common build
+      - run: pnpm --filter @novelcp/cron build
+      - run: node packages/cron/dist/index.js

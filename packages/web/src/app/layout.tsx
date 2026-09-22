@@ -5,6 +5,9 @@ import "./global.css"
 import { ThemeProvider } from "next-themes"
 import { ModeToggle } from "@/components/mode-toggle"
 
+// ponytail: never touch the DB at build time; switch to `revalidate = 3600` if request volume ever matters
+export const dynamic = "force-dynamic"
+
 const notoSansJp = Noto_Sans_JP({
   variable: "--font-noto-sans",
   subsets: ["latin"],
